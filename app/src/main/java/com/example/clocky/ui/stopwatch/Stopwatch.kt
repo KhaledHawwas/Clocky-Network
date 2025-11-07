@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.material.*
+import com.example.clocky.ui.networkInfo
 
 /**
  * A stopwatch composable.
@@ -55,6 +56,13 @@ fun Stopwatch(
             onStopButtonClick = onStopButtonClick,
             isStopButtonEnabled = isStopButtonEnabled,
             isStopwatchRunning = isStopwatchRunning
+        )
+        Text(
+            modifier = Modifier
+                .padding(top = 4.dp),
+            text =networkInfo.value,
+            fontSize = 14.sp,
+            color = Color.White
         )
     }
 }

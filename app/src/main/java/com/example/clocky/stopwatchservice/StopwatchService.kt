@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.clocky.BuildConfig
@@ -14,6 +15,7 @@ import com.example.clocky.di.ClockyApplication
 import com.example.clocky.domain.millisformatter.MillisFormatter
 import com.example.clocky.domain.stopwatch.Stopwatch
 import com.example.clocky.stopwatchservice.notification.StopwatchNotificationBuilder
+import com.example.clocky.ui.collectNetworkInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.*
@@ -69,6 +71,10 @@ class StopwatchService : Service() {
     }
 
     private fun createOrUpdateNotification(timeText: String) {
+        if (timeText.last().digitToInt()%5==0){
+            Log.i(BuildConfig.APPLICATION_ID, "Collecting network info from Stopwatch Service")
+        collectNetworkInfo()}
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val isPostNotificationsPermissionsGranted =
                 checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
@@ -125,6 +131,8 @@ class StopwatchService : Service() {
     enum class StopwatchState { RESET, PAUSED, RUNNING }
 
     companion object {
-        private const val FOREGROUND_NOTIFICATION_ID = -20
+        // Notification id must be non-negative. Use a small positive id for the foreground
+        // service notification.
+        private const val FOREGROUND_NOTIFICATION_ID = 1
     }
 }

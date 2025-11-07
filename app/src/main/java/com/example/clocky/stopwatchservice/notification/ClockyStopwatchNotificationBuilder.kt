@@ -47,10 +47,10 @@ class ClockyStopwatchNotificationBuilder(
     }
 
     /**
-     * Used to create a notification channel if the version of Android > Oreo.
+     * Used to create a notification channel if the version of Android >= Oreo.
      */
     private fun createNotificationChannelIfNecessary() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) return
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         val notificationChannel = NotificationChannelCompat.Builder(
             NOTIFICATION_CHANNEL_ID,
             NotificationManagerCompat.IMPORTANCE_LOW
